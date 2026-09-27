@@ -6,6 +6,7 @@ import {
   useState,
   type CSSProperties,
   type MouseEventHandler,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
 
@@ -112,8 +113,8 @@ function BeforeAfter({
         src={before}
         alt={`${label}: antes do tratamento`}
         className="comparison-image comparison-before"
-        width="1170"
-        height="568"
+        width="960"
+        height="1280"
         loading="lazy"
       />
       <div className="comparison-after-wrap" aria-hidden="true">
@@ -121,8 +122,8 @@ function BeforeAfter({
           src={after}
           alt=""
           className="comparison-image comparison-after"
-          width="1170"
-          height="568"
+          width="960"
+          height="1280"
           loading="lazy"
         />
       </div>
@@ -141,6 +142,137 @@ function BeforeAfter({
         onChange={(event) => setPosition(Number(event.target.value))}
         aria-label={`Comparar antes e depois: ${label}`}
       />
+    </div>
+  );
+}
+
+const case02Images = [
+  {
+    src: "/assets/caso-02-imagem-01.jpeg",
+    alt: "Retrato da paciente sorrindo no Caso 02",
+    width: 1702,
+    height: 2560,
+  },
+  {
+    src: "/assets/caso-02-imagem-02.jpeg",
+    alt: "Retrato próximo da paciente sorrindo no Caso 02",
+    width: 1021,
+    height: 1536,
+  },
+  {
+    src: "/assets/caso-02-imagem-03.jpeg",
+    alt: "Retrato lateral da paciente no Caso 02",
+    width: 1021,
+    height: 1536,
+  },
+  {
+    src: "/assets/caso-02-imagem-04.jpeg",
+    alt: "Detalhe do sorriso da paciente no Caso 02",
+    width: 1536,
+    height: 802,
+  },
+];
+
+function CaseGallery() {
+  const [index, setIndex] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef<{ pointerId: number; x: number } | null>(null);
+  const activeImage = case02Images[index];
+
+  const startDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0) return;
+    dragStart.current = { pointerId: event.pointerId, x: event.clientX };
+    setIsDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const moveDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (dragStart.current?.pointerId !== event.pointerId) return;
+    setDragOffset(event.clientX - dragStart.current.x);
+  };
+
+  const finishDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const start = dragStart.current;
+    if (!start || start.pointerId !== event.pointerId) return;
+
+    const distance = event.clientX - start.x;
+    if (Math.abs(distance) > 48) {
+      setIndex((current) =>
+        Math.max(0, Math.min(case02Images.length - 1, current + (distance < 0 ? 1 : -1))),
+      );
+    }
+    dragStart.current = null;
+    setDragOffset(0);
+    setIsDragging(false);
+  };
+
+  const cancelDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (dragStart.current?.pointerId !== event.pointerId) return;
+    dragStart.current = null;
+    setDragOffset(0);
+    setIsDragging(false);
+  };
+
+  return (
+    <div className="case-gallery">
+      <div
+        className={`case-gallery-viewport${isDragging ? " is-dragging" : ""}`}
+        style={{
+          "--gallery-ratio": `${activeImage.width} / ${activeImage.height}`,
+        } as CSSProperties}
+        onPointerDown={startDrag}
+        onPointerMove={moveDrag}
+        onPointerUp={finishDrag}
+        onPointerCancel={cancelDrag}
+        onDragStart={(event) => event.preventDefault()}
+        aria-label="Galeria de fotografias do Caso 02. Arraste para navegar."
+      >
+        <div
+          className="case-gallery-track"
+          style={{ transform: `translate3d(calc(-${index * 100}% + ${dragOffset}px), 0, 0)` }}
+        >
+          {case02Images.map((image) => (
+            <figure className="case-gallery-slide" key={image.src}>
+              <img
+                src={image.src}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                loading="lazy"
+                draggable={false}
+              />
+            </figure>
+          ))}
+        </div>
+      </div>
+
+      <div className="case-gallery-footer">
+        <span className="case-gallery-count" aria-live="polite">
+          {String(index + 1).padStart(2, "0")} <span aria-hidden="true">/</span> {String(case02Images.length).padStart(2, "0")}
+        </span>
+        <div className="case-gallery-progress" aria-hidden="true">
+          <span style={{ transform: `scaleX(${(index + 1) / case02Images.length})` }} />
+        </div>
+        <div className="case-gallery-controls">
+          <button
+            type="button"
+            aria-label="Fotografia anterior"
+            disabled={index === 0}
+            onClick={() => setIndex((current) => Math.max(0, current - 1))}
+          >
+            <span aria-hidden="true">←</span>
+          </button>
+          <button
+            type="button"
+            aria-label="Próxima fotografia"
+            disabled={index === case02Images.length - 1}
+            onClick={() => setIndex((current) => Math.min(case02Images.length - 1, current + 1))}
+          >
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -417,7 +549,6 @@ export default function SitePage() {
             <aside className="cases-aside">
               <div className="cases-sticky">
                 <p>Casos reais</p>
-                <span>Arraste para comparar.</span>
                 <small>Resultados individuais podem variar.</small>
               </div>
             </aside>
@@ -426,11 +557,12 @@ export default function SitePage() {
               <article className="case-story" data-reveal data-case-zoom>
                 <header>
                   <span>Caso 01</span>
+                  <p>Arraste para comparar.</p>
                 </header>
                 <div className="case-media-shell">
                   <BeforeAfter
-                    before="/assets/caso-01-antes.png"
-                    after="/assets/caso-01-depois.png"
+                    before="/assets/caso-01-antes.jpeg"
+                    after="/assets/caso-01-depois.jpeg"
                     label="Caso real 01"
                   />
                 </div>
@@ -441,11 +573,7 @@ export default function SitePage() {
                   <span>Caso 02</span>
                 </header>
                 <div className="case-media-shell">
-                  <BeforeAfter
-                    before="/assets/facetas-02-antes.webp"
-                    after="/assets/facetas-02-depois.webp"
-                    label="Caso real 02"
-                  />
+                  <CaseGallery />
                 </div>
               </article>
             </div>
