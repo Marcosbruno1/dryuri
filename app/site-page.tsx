@@ -173,15 +173,63 @@ const case02Images = [
   },
 ];
 
-function CaseGallery() {
+const case03Images = [
+  {
+    src: "/assets/caso-03-imagem-01.jpeg",
+    alt: "Fotografia do sorriso e do rosto do paciente no Caso 03",
+    width: 960,
+    height: 1280,
+  },
+  {
+    src: "/assets/caso-03-imagem-02.jpeg",
+    alt: "Fotografia clínica do paciente com afastador no Caso 03",
+    width: 1280,
+    height: 960,
+  },
+  {
+    src: "/assets/caso-03-imagem-03.jpeg",
+    alt: "Fotografia aproximada do sorriso do paciente no Caso 03",
+    width: 1280,
+    height: 960,
+  },
+];
+
+const case04Images = [
+  {
+    src: "/assets/caso-04-imagem-01.jpeg",
+    alt: "Primeira fotografia clínica do Caso 04",
+    width: 1280,
+    height: 960,
+  },
+  {
+    src: "/assets/caso-04-imagem-02.jpeg",
+    alt: "Segunda fotografia clínica do Caso 04",
+    width: 1280,
+    height: 960,
+  },
+  {
+    src: "/assets/caso-04-imagem-03.jpeg",
+    alt: "Fotografia clínica lateral do Caso 04",
+    width: 864,
+    height: 1536,
+  },
+];
+
+function CaseGallery({
+  images,
+  caseLabel,
+}: {
+  images: typeof case02Images;
+  caseLabel: string;
+}) {
   const [index, setIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const dragStart = useRef<{ pointerId: number; x: number } | null>(null);
-  const activeImage = case02Images[index];
+  const activeImage = images[index];
 
   const startDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0) return;
+    if (event.pointerType !== "touch" && event.button !== 0) return;
     dragStart.current = { pointerId: event.pointerId, x: event.clientX };
     setIsDragging(true);
     event.currentTarget.setPointerCapture(event.pointerId);
@@ -199,7 +247,7 @@ function CaseGallery() {
     const distance = event.clientX - start.x;
     if (Math.abs(distance) > 48) {
       setIndex((current) =>
-        Math.max(0, Math.min(case02Images.length - 1, current + (distance < 0 ? 1 : -1))),
+        Math.max(0, Math.min(images.length - 1, current + (distance < 0 ? 1 : -1))),
       );
     }
     dragStart.current = null;
@@ -226,13 +274,13 @@ function CaseGallery() {
         onPointerUp={finishDrag}
         onPointerCancel={cancelDrag}
         onDragStart={(event) => event.preventDefault()}
-        aria-label="Galeria de fotografias do Caso 02. Arraste para navegar."
+        aria-label={`Galeria de fotografias do ${caseLabel}. Arraste para navegar.`}
       >
         <div
           className="case-gallery-track"
           style={{ transform: `translate3d(calc(-${index * 100}% + ${dragOffset}px), 0, 0)` }}
         >
-          {case02Images.map((image) => (
+          {images.map((image) => (
             <figure className="case-gallery-slide" key={image.src}>
               <img
                 src={image.src}
@@ -249,10 +297,10 @@ function CaseGallery() {
 
       <div className="case-gallery-footer">
         <span className="case-gallery-count" aria-live="polite">
-          {String(index + 1).padStart(2, "0")} <span aria-hidden="true">/</span> {String(case02Images.length).padStart(2, "0")}
+          {String(index + 1).padStart(2, "0")} <span aria-hidden="true">/</span> {String(images.length).padStart(2, "0")}
         </span>
         <div className="case-gallery-progress" aria-hidden="true">
-          <span style={{ transform: `scaleX(${(index + 1) / case02Images.length})` }} />
+          <span style={{ transform: `scaleX(${(index + 1) / images.length})` }} />
         </div>
         <div className="case-gallery-controls">
           <button
@@ -266,8 +314,8 @@ function CaseGallery() {
           <button
             type="button"
             aria-label="Próxima fotografia"
-            disabled={index === case02Images.length - 1}
-            onClick={() => setIndex((current) => Math.min(case02Images.length - 1, current + 1))}
+            disabled={index === images.length - 1}
+            onClick={() => setIndex((current) => Math.min(images.length - 1, current + 1))}
           >
             <span aria-hidden="true">→</span>
           </button>
@@ -573,8 +621,50 @@ export default function SitePage() {
                   <span>Caso 02</span>
                 </header>
                 <div className="case-media-shell">
-                  <CaseGallery />
+                  <CaseGallery images={case02Images} caseLabel="Caso 02" />
                 </div>
+              </article>
+
+              <article className="case-story case-story-offset" data-reveal data-case-zoom>
+                <header>
+                  <span>Caso 03</span>
+                </header>
+                <div className="case-media-shell">
+                  <CaseGallery images={case03Images} caseLabel="Caso 03" />
+                </div>
+              </article>
+
+              <article className="case-story case-story-offset" data-reveal data-case-zoom>
+                <header>
+                  <span>Caso 04</span>
+                </header>
+                <div className="case-media-shell">
+                  <CaseGallery images={case04Images} caseLabel="Caso 04" />
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="feedbacks" id="feedbacks" aria-labelledby="feedbacks-title">
+          <div className="section-shell feedbacks-shell">
+            <div className="feedbacks-heading" data-reveal>
+              <p className="feedbacks-kicker">Feedbacks reais</p>
+              <h2 id="feedbacks-title">Experiências de quem confiou no nosso trabalho.</h2>
+            </div>
+
+            <div className="feedbacks-grid">
+              <article className="feedback-card" data-reveal>
+                <blockquote>
+                  <p>“Agradeço o cuidado e parabenizo a clínica pelo profissionalismo e humanização com que tudo está sendo feito. Não tenho dúvidas que fiz a melhor escolha.”</p>
+                </blockquote>
+                <footer className="feedback-card-source">Paciente</footer>
+              </article>
+
+              <article className="feedback-card" data-reveal>
+                <blockquote>
+                  <p>“Gratidão pelo atendimento de excelência e o resultado impecável que você entregou. Eu estou realizada.”</p>
+                </blockquote>
               </article>
             </div>
           </div>
@@ -717,10 +807,10 @@ export default function SitePage() {
             <figure className="story story-detail" data-reveal>
               <div className="image-clip">
                 <img
-                  src="/assets/resultado-detalhe.jpeg"
+                  src="/assets/prova-visual-clinica.jpeg"
                   alt="Registro clínico aproximado de um sorriso"
-                  width="1170"
-                  height="1332"
+                  width="1280"
+                  height="960"
                   loading="lazy"
                   data-parallax="0.04"
                 />
