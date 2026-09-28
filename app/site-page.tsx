@@ -355,27 +355,34 @@ const treatments = [
 const orthodontics = [
   {
     number: "01",
+    title: "Alinhadores transparentes",
+    copy: "Uma alternativa discreta e removível, planejada de forma individual de acordo com as necessidades de cada caso.",
+    image: "/assets/demo-ortho-alinhadores-transparentes.jpeg",
+    alt: "Imagem de alinhador transparente",
+  },
+  {
+    number: "02",
     title: "Tradicional",
     copy: "Uma alternativa clássica dentro do planejamento ortodôntico, considerada conforme a avaliação.",
     image: "/assets/demo-ortho-tradicional.webp",
     alt: "Imagem demonstrativa de aparelho ortodôntico tradicional em modelo odontológico",
   },
   {
-    number: "02",
+    number: "03",
     title: "Safira",
     copy: "Opção estética com componentes translúcidos, avaliada de acordo com o caso e o objetivo do paciente.",
     image: "/assets/demo-ortho-safira.webp",
     alt: "Imagem demonstrativa de aparelho ortodôntico de safira em modelo odontológico",
   },
   {
-    number: "03",
+    number: "04",
     title: "Porcelana",
     copy: "Uma possibilidade de aparência discreta, incluída na conversa sobre alternativas ortodônticas.",
     image: "/assets/demo-ortho-porcelana.webp",
     alt: "Imagem demonstrativa de aparelho ortodôntico de porcelana em modelo odontológico",
   },
   {
-    number: "04",
+    number: "05",
     title: "Autoligado",
     copy: "Sistema com características próprias, cuja indicação também depende de avaliação individual.",
     image: "/assets/demo-ortho-autoligado.webp",
