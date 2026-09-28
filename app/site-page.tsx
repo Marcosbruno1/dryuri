@@ -467,8 +467,13 @@ export default function SitePage() {
   }, []);
 
   useEffect(() => {
+    document.documentElement.classList.toggle("menu-is-open", menuOpen);
     document.body.classList.toggle("menu-is-open", menuOpen);
-    return () => document.body.classList.remove("menu-is-open");
+
+    return () => {
+      document.documentElement.classList.remove("menu-is-open");
+      document.body.classList.remove("menu-is-open");
+    };
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
