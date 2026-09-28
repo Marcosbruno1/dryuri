@@ -421,7 +421,7 @@ img { display: block; max-width: 100%; }
 .story-two { grid-column: 9 / span 4; margin-top: 6%; }
 .story .image-clip { background: #e2e0dc; }
 .story-one .image-clip { aspect-ratio: 0.82; }
-.story-detail .image-clip { aspect-ratio: 4 / 3; }
+.story-detail .image-clip { aspect-ratio: 2 / 3; }
 .story-two .image-clip { aspect-ratio: 0.86; }
 .story img { width: 100%; height: calc(100% + 62px); object-fit: cover; transform: translate3d(0, var(--parallax-y, 0), 0) scale(1.025); }
 .story-detail img { height: 100%; object-fit: contain; transform: none; }

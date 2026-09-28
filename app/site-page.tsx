@@ -810,8 +810,8 @@ export default function SitePage() {
                 <img
                   src="/assets/prova-visual-clinica.jpeg"
                   alt="Registro clínico aproximado de um sorriso"
-                  width="1280"
-                  height="960"
+                  width="1022"
+                  height="1536"
                   loading="lazy"
                   data-parallax="0.04"
                 />
