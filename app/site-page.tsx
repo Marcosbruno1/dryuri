@@ -665,6 +665,7 @@ export default function SitePage() {
                 <blockquote>
                   <p>“Gratidão pelo atendimento de excelência e o resultado impecável que você entregou. Eu estou realizada.”</p>
                 </blockquote>
+                <footer className="feedback-card-source">Paciente</footer>
               </article>
             </div>
           </div>
