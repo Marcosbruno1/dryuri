@@ -6,7 +6,6 @@ import {
   useState,
   type CSSProperties,
   type MouseEventHandler,
-  type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
 
@@ -97,24 +96,35 @@ function BeforeAfter({
   before,
   after,
   label,
+  beforeWidth = 960,
+  beforeHeight = 1280,
+  afterWidth = 960,
+  afterHeight = 1280,
 }: {
   before: string;
   after: string;
   label: string;
+  beforeWidth?: number;
+  beforeHeight?: number;
+  afterWidth?: number;
+  afterHeight?: number;
 }) {
   const [position, setPosition] = useState(50);
 
   return (
     <div
       className="comparison"
-      style={{ "--position": `${position}%` } as CSSProperties}
+      style={{
+        "--position": `${position}%`,
+        aspectRatio: `${beforeWidth} / ${beforeHeight}`,
+      } as CSSProperties}
     >
       <img
         src={before}
         alt={`${label}: antes do tratamento`}
         className="comparison-image comparison-before"
-        width="960"
-        height="1280"
+        width={beforeWidth}
+        height={beforeHeight}
         loading="lazy"
       />
       <div className="comparison-after-wrap" aria-hidden="true">
@@ -122,8 +132,8 @@ function BeforeAfter({
           src={after}
           alt=""
           className="comparison-image comparison-after"
-          width="960"
-          height="1280"
+          width={afterWidth}
+          height={afterHeight}
           loading="lazy"
         />
       </div>
@@ -142,185 +152,6 @@ function BeforeAfter({
         onChange={(event) => setPosition(Number(event.target.value))}
         aria-label={`Comparar antes e depois: ${label}`}
       />
-    </div>
-  );
-}
-
-const case02Images = [
-  {
-    src: "/assets/caso-02-imagem-01.jpeg",
-    alt: "Retrato da paciente sorrindo no Caso 02",
-    width: 1702,
-    height: 2560,
-  },
-  {
-    src: "/assets/caso-02-imagem-02.jpeg",
-    alt: "Retrato próximo da paciente sorrindo no Caso 02",
-    width: 1021,
-    height: 1536,
-  },
-  {
-    src: "/assets/caso-02-imagem-03.jpeg",
-    alt: "Retrato lateral da paciente no Caso 02",
-    width: 1021,
-    height: 1536,
-  },
-  {
-    src: "/assets/caso-02-imagem-04.jpeg",
-    alt: "Detalhe do sorriso da paciente no Caso 02",
-    width: 1536,
-    height: 802,
-  },
-];
-
-const case03Images = [
-  {
-    src: "/assets/caso-03-imagem-01.jpeg",
-    alt: "Fotografia do sorriso e do rosto do paciente no Caso 03",
-    width: 960,
-    height: 1280,
-  },
-  {
-    src: "/assets/caso-03-imagem-02.jpeg",
-    alt: "Fotografia clínica do paciente com afastador no Caso 03",
-    width: 1280,
-    height: 960,
-  },
-  {
-    src: "/assets/caso-03-imagem-03.jpeg",
-    alt: "Fotografia aproximada do sorriso do paciente no Caso 03",
-    width: 1280,
-    height: 960,
-  },
-];
-
-const case04Images = [
-  {
-    src: "/assets/caso-04-imagem-01.jpeg",
-    alt: "Primeira fotografia clínica do Caso 04",
-    width: 1280,
-    height: 960,
-  },
-  {
-    src: "/assets/caso-04-imagem-02.jpeg",
-    alt: "Segunda fotografia clínica do Caso 04",
-    width: 1280,
-    height: 960,
-  },
-  {
-    src: "/assets/caso-04-imagem-03.jpeg",
-    alt: "Fotografia clínica lateral do Caso 04",
-    width: 864,
-    height: 1536,
-  },
-];
-
-function CaseGallery({
-  images,
-  caseLabel,
-}: {
-  images: typeof case02Images;
-  caseLabel: string;
-}) {
-  const [index, setIndex] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStart = useRef<{ pointerId: number; x: number } | null>(null);
-  const activeImage = images[index];
-
-  const startDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (event.pointerType !== "touch" && event.button !== 0) return;
-    dragStart.current = { pointerId: event.pointerId, x: event.clientX };
-    setIsDragging(true);
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const moveDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (dragStart.current?.pointerId !== event.pointerId) return;
-    setDragOffset(event.clientX - dragStart.current.x);
-  };
-
-  const finishDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const start = dragStart.current;
-    if (!start || start.pointerId !== event.pointerId) return;
-
-    const distance = event.clientX - start.x;
-    if (Math.abs(distance) > 48) {
-      setIndex((current) =>
-        Math.max(0, Math.min(images.length - 1, current + (distance < 0 ? 1 : -1))),
-      );
-    }
-    dragStart.current = null;
-    setDragOffset(0);
-    setIsDragging(false);
-  };
-
-  const cancelDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (dragStart.current?.pointerId !== event.pointerId) return;
-    dragStart.current = null;
-    setDragOffset(0);
-    setIsDragging(false);
-  };
-
-  return (
-    <div className="case-gallery">
-      <div
-        className={`case-gallery-viewport${isDragging ? " is-dragging" : ""}`}
-        style={{
-          "--gallery-ratio": `${activeImage.width} / ${activeImage.height}`,
-        } as CSSProperties}
-        onPointerDown={startDrag}
-        onPointerMove={moveDrag}
-        onPointerUp={finishDrag}
-        onPointerCancel={cancelDrag}
-        onDragStart={(event) => event.preventDefault()}
-        aria-label={`Galeria de fotografias do ${caseLabel}. Arraste para navegar.`}
-      >
-        <div
-          className="case-gallery-track"
-          style={{ transform: `translate3d(calc(-${index * 100}% + ${dragOffset}px), 0, 0)` }}
-        >
-          {images.map((image) => (
-            <figure className="case-gallery-slide" key={image.src}>
-              <img
-                src={image.src}
-                alt={image.alt}
-                width={image.width}
-                height={image.height}
-                loading="lazy"
-                draggable={false}
-              />
-            </figure>
-          ))}
-        </div>
-      </div>
-
-      <div className="case-gallery-footer">
-        <span className="case-gallery-count" aria-live="polite">
-          {String(index + 1).padStart(2, "0")} <span aria-hidden="true">/</span> {String(images.length).padStart(2, "0")}
-        </span>
-        <div className="case-gallery-progress" aria-hidden="true">
-          <span style={{ transform: `scaleX(${(index + 1) / images.length})` }} />
-        </div>
-        <div className="case-gallery-controls">
-          <button
-            type="button"
-            aria-label="Fotografia anterior"
-            disabled={index === 0}
-            onClick={() => setIndex((current) => Math.max(0, current - 1))}
-          >
-            <span aria-hidden="true">←</span>
-          </button>
-          <button
-            type="button"
-            aria-label="Próxima fotografia"
-            disabled={index === images.length - 1}
-            onClick={() => setIndex((current) => Math.min(images.length - 1, current + 1))}
-          >
-            <span aria-hidden="true">→</span>
-          </button>
-        </div>
-      </div>
     </div>
   );
 }
@@ -628,30 +459,39 @@ export default function SitePage() {
                 </div>
               </article>
 
-              <article className="case-story case-story-offset" data-reveal data-case-zoom>
+              <article className="case-story case-story-offset" data-reveal>
                 <header>
                   <span>Caso 02</span>
+                  <p>Arraste para comparar.</p>
                 </header>
                 <div className="case-media-shell">
-                  <CaseGallery images={case02Images} caseLabel="Caso 02" />
+                  <BeforeAfter
+                    before="/assets/caso-02-verde-antes.jpeg"
+                    after="/assets/caso-02-verde-depois.jpeg"
+                    label="Caso real 02"
+                    beforeWidth={1021}
+                    beforeHeight={1536}
+                    afterWidth={1702}
+                    afterHeight={2560}
+                  />
                 </div>
               </article>
 
-              <article className="case-story case-story-offset" data-reveal data-case-zoom>
+              <article className="case-story case-story-offset" data-reveal>
                 <header>
                   <span>Caso 03</span>
+                  <p>Arraste para comparar.</p>
                 </header>
                 <div className="case-media-shell">
-                  <CaseGallery images={case03Images} caseLabel="Caso 03" />
-                </div>
-              </article>
-
-              <article className="case-story case-story-offset" data-reveal data-case-zoom>
-                <header>
-                  <span>Caso 04</span>
-                </header>
-                <div className="case-media-shell">
-                  <CaseGallery images={case04Images} caseLabel="Caso 04" />
+                  <BeforeAfter
+                    before="/assets/caso-03-antes.jpeg"
+                    after="/assets/caso-03-depois.jpeg"
+                    label="Caso real 03"
+                    beforeWidth={1280}
+                    beforeHeight={960}
+                    afterWidth={1280}
+                    afterHeight={960}
+                  />
                 </div>
               </article>
             </div>
