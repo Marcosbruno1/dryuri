@@ -186,14 +186,14 @@ const treatments = [
 const orthodontics = [
   {
     number: "01",
-    title: "Alinhadores transparentes",
+    title: "Alinhadores Invisíveis",
     copy: "Uma alternativa discreta e removível, planejada de forma individual de acordo com as necessidades de cada caso.",
     image: "/assets/demo-ortho-alinhadores-transparentes.jpeg",
     alt: "Imagem de alinhador transparente",
   },
   {
     number: "02",
-    title: "Tradicional",
+    title: "Convencional",
     copy: "Uma alternativa clássica dentro do planejamento ortodôntico, considerada conforme a avaliação.",
     image: "/assets/demo-ortho-tradicional.webp",
     alt: "Imagem demonstrativa de aparelho ortodôntico tradicional em modelo odontológico",
@@ -511,7 +511,7 @@ export default function SitePage() {
                   <p>“Agradeço o cuidado e parabenizo a clínica pelo profissionalismo e humanização com que tudo está sendo feito. Não tenho dúvidas que fiz a melhor escolha.”</p>
                 </blockquote>
                 <footer className="feedback-card-source">
-                  <span className="feedback-card-name">Maria Clara Santos Rodrigues</span>
+                  <span className="feedback-card-name">Patrícia Freire</span>
                   <span className="feedback-card-role">Paciente</span>
                 </footer>
               </article>
@@ -521,7 +521,7 @@ export default function SitePage() {
                   <p>“Gratidão pelo atendimento de excelência e o resultado impecável que você entregou. Eu estou realizada.”</p>
                 </blockquote>
                 <footer className="feedback-card-source">
-                  <span className="feedback-card-name">Ana Julia</span>
+                  <span className="feedback-card-name">Ana Júlia</span>
                   <span className="feedback-card-role">Paciente</span>
                 </footer>
               </article>
@@ -674,7 +674,7 @@ export default function SitePage() {
                   data-parallax="0.04"
                 />
               </div>
-              <figcaption><span>04</span> Detalhe clínico</figcaption>
+              <figcaption><span>04</span> CLAREAMENTO DENTAL</figcaption>
             </figure>
 
             <figure className="story story-two" data-reveal>
