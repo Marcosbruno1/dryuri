@@ -346,33 +346,26 @@ img { display: block; max-width: 100%; }
 .feedbacks-heading h2 { max-width: 700px; margin: 42px 0 0; font-family: var(--display); font-size: clamp(44px, 4.8vw, 72px); font-weight: 400; line-height: 0.96; letter-spacing: -0.055em; }
 .feedbacks-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 3.4vw, 52px); align-items: start; }
 .feedback-card {
-  position: relative;
   display: flex;
-  min-height: clamp(300px, 26vw, 390px);
   flex-direction: column;
-  justify-content: space-between;
   margin: 0;
-  padding: clamp(36px, 4vw, 60px) clamp(28px, 3.4vw, 52px) clamp(30px, 3.6vw, 46px);
-  overflow: hidden;
-  border: 1px solid rgba(22, 25, 28, 0.18);
+  padding: clamp(30px, 3.4vw, 48px) clamp(26px, 2.8vw, 42px) clamp(26px, 3vw, 38px);
+  border: 1px solid rgba(22, 25, 28, 0.07);
   border-radius: 0;
-  background: var(--fog);
+  background: #e5e1da;
 }
-.feedback-card:nth-child(2) { min-height: clamp(254px, 22vw, 330px); margin-top: clamp(52px, 7vw, 104px); }
-.feedback-card::before {
-  position: absolute;
-  top: clamp(18px, 2vw, 30px);
-  right: clamp(22px, 3vw, 42px);
-  content: "“";
-  color: rgba(22, 25, 28, 0.22);
-  font-family: var(--display);
-  font-size: clamp(58px, 6vw, 88px);
-  line-height: 0.7;
-  pointer-events: none;
-}
+.feedback-card:nth-child(2) { margin-top: clamp(36px, 4vw, 64px); }
 .feedback-card blockquote { max-width: 34rem; margin: 0; color: var(--ink); font-family: var(--display); font-size: clamp(19px, 1.6vw, 26px); font-weight: 400; line-height: 1.42; letter-spacing: -0.018em; }
 .feedback-card blockquote p { margin: 0; }
-.feedback-card-source { margin: clamp(42px, 5vw, 70px) 0 0; color: #676c70; font-size: 9px; font-weight: 500; letter-spacing: 0.18em; line-height: 1; text-transform: uppercase; }
+.feedback-card-source {
+  display: grid;
+  gap: 6px;
+  margin: clamp(28px, 3.5vw, 42px) 0 0;
+  padding-top: 15px;
+  border-top: 1px solid rgba(22, 25, 28, 0.09);
+}
+.feedback-card-name { color: #34393c; font-size: clamp(12px, 0.9vw, 14px); font-weight: 500; letter-spacing: 0.005em; line-height: 1.3; }
+.feedback-card-role { color: #7a7d7e; font-size: 9px; font-weight: 500; letter-spacing: 0.18em; line-height: 1.2; text-transform: uppercase; }
 
 .about { position: relative; padding: clamp(94px, 10vw, 156px) 0; overflow: hidden; background: var(--graphite); color: var(--white); }
 .about::before { display: none; }
@@ -597,9 +590,9 @@ img { display: block; max-width: 100%; }
 
   .feedbacks { padding: 82px 0 112px; }
   .feedbacks-shell { grid-template-columns: 1fr; gap: 54px; }
-  .feedbacks-grid { grid-template-columns: 1fr; gap: 32px; max-width: 720px; margin-inline: auto; }
-  .feedback-card { width: calc(100% - 16px); }
-  .feedback-card:nth-child(2) { width: calc(100% - 44px); margin-top: 0; justify-self: end; }
+  .feedbacks-grid { grid-template-columns: 1fr; gap: 24px; max-width: 720px; margin-inline: auto; }
+  .feedback-card,
+  .feedback-card:nth-child(2) { width: 100%; margin-top: 0; }
 
   .cases-layout { grid-template-columns: 1fr; gap: 34px; margin-top: 36px; }
   .cases-sticky { position: static; display: flex; flex-direction: column; align-items: flex-start; }
@@ -665,13 +658,12 @@ img { display: block; max-width: 100%; }
   .feedbacks-shell { gap: 46px; }
   .feedbacks-heading { padding-top: 16px; }
   .feedbacks-heading h2 { margin-top: 32px; font-size: clamp(40px, 11vw, 54px); }
-  .feedbacks-grid { display: flex; flex-direction: column; gap: 28px; width: 100%; max-width: none; }
+  .feedbacks-grid { display: flex; flex-direction: column; gap: 24px; width: 100%; max-width: none; }
   .feedback-card,
   .feedback-card:nth-child(2) {
-    width: calc(100% - 16px);
-    min-height: 0;
-    margin: 0 auto;
-    padding: 34px 28px 36px;
+    width: 100%;
+    margin: 0;
+    padding: 28px 24px 26px;
   }
   .feedback-card blockquote { font-size: clamp(19px, 5.5vw, 24px); line-height: 1.42; }
 

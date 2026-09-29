@@ -670,14 +670,20 @@ export default function SitePage() {
                 <blockquote>
                   <p>“Agradeço o cuidado e parabenizo a clínica pelo profissionalismo e humanização com que tudo está sendo feito. Não tenho dúvidas que fiz a melhor escolha.”</p>
                 </blockquote>
-                <footer className="feedback-card-source">Paciente</footer>
+                <footer className="feedback-card-source">
+                  <span className="feedback-card-name">Maria Clara Santos Rodrigues</span>
+                  <span className="feedback-card-role">Paciente</span>
+                </footer>
               </article>
 
               <article className="feedback-card" data-reveal>
                 <blockquote>
                   <p>“Gratidão pelo atendimento de excelência e o resultado impecável que você entregou. Eu estou realizada.”</p>
                 </blockquote>
-                <footer className="feedback-card-source">Paciente</footer>
+                <footer className="feedback-card-source">
+                  <span className="feedback-card-name">Ana Julia</span>
+                  <span className="feedback-card-role">Paciente</span>
+                </footer>
               </article>
             </div>
           </div>
